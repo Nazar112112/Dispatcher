@@ -36,7 +36,7 @@ class Aircraft:
 
         
         
-    def create(self, maxHorisontal, maxVertical, maxSpeedUpHorisontal, maxSpeedUpVertical, priority, speed, name, startPos, timeOfAppear, designation):
+    def create(self, maxHorisontal, maxVertical, maxSpeedUpHorisontal, maxSpeedUpVertical, priority, speed, name, startPos, timeOfAppear, destination):
         self.maxHorisontal=maxHorisontal
         self.maxVertical=maxVertical
         self.maxSpeedUpHorisontal=maxSpeedUpHorisontal
@@ -46,7 +46,7 @@ class Aircraft:
         self.name=name
         self.startPos=startPos
         self.timeOfAppear=timeOfAppear
-        self.designation=designation
+        self.destination=destination
     
     
     

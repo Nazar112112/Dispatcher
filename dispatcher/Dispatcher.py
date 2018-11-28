@@ -1,4 +1,4 @@
-from route import *
+from Route import *
 
 
 class Dispatcher:
@@ -14,25 +14,25 @@ class Dispatcher:
 
     def wayBuilder(self, object):
         screen=[]
-        designation=object.designation
+        destination=object.destination
         start=object.startPos
         for i in range(0, self.limit[0]):
             for j in range(0, self.limit[1]):
                 screen.append([i, j, -1])
         for i in screen:
             if i[0]==start[0] and i[1]==start[1]:
-                i[2]=0
+                i[2]=object.timeOfAppear
         #vawe started
-        counter=0
+        counter=object.timeOfAppear
         while True:
             self.numbersPlacing(counter, screen)
             counter+=1
-            if self.isDesignationFilled(designation, screen):
+            if self.isDesignationFilled(destination, screen):
                 for i in screen:
-                    if i[2]!=-1 and i[0]==designation[0] and i[1]==designation[1]:
+                    if i[2]!=-1 and i[0]==destination[0] and i[1]==destination[1]:
                         end=i
                 
-                return Route(self.findWay(end, start, screen))
+                return Route(self.findWay(end, start, screen, object))
                 break
        
        
@@ -83,7 +83,7 @@ class Dispatcher:
 
         
         
-    def findWay(self, end, start, screen):
+    def findWay(self, end, start, screen, obj):
         posibility=[]
         way=[end]
         for i in screen:
@@ -97,7 +97,7 @@ class Dispatcher:
                     a=i
             way.append(a)
             curent=a
-            if way[len(way)-1][2]==0:
+            if way[len(way)-1][2]==obj.timeOfAppear:
                 break
         way=way[::-1]
         return way
