@@ -1,13 +1,13 @@
 from Route import *
+from time import *
 
 
 class Dispatcher:
     def __init__(self, view):
-        self.exception=[]
-        self.slots=[]
+        self.objectsMaps=[]
         self.view=view
         self.limit=[view.x_count, 8]
-        print(self.limit)
+
 
 
         
@@ -43,6 +43,7 @@ class Dispatcher:
        
     def numbersPlacing(self, counter, screen): 
         variants=[]
+        #print(screen)
         for i in screen:
             if i[2]==counter:
                 variants.append([i[0], i[1]])
@@ -100,6 +101,8 @@ class Dispatcher:
             if way[len(way)-1][2]==obj.timeOfAppear:
                 break
         way=way[::-1]
+        route=Route(way)
+        self.mapBuilder(route, obj, way)
         return way
             
             
@@ -108,17 +111,31 @@ class Dispatcher:
         
     
     def isEmpty(self, coords):
+        if len(self.objectsMaps)!=0:
+            for i in self.objectsMaps:
+                try:
+                    if i[coords[2]][0]==coords[0] and i[coords[2]][1]==coords[1]:
+                        return False
+
+                except:
+                    pass
         if coords[2]==-1:
             return True
         else:
             return False
-    
+        
 
         
         
 
 
-        
+    def  mapBuilder(self, route, obj, way):
+        map={}
+        for i in range(route.giveByMinTime(way), route.giveByMaxTime(way)+1):
+            map[i]=route.giveByTime(way, i)
+        print(map)
+        self.objectsMaps.append(map)
+            
         
         
         

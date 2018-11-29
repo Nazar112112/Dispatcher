@@ -22,7 +22,7 @@ class Route:
             if i[2]<a[2]:
                 a=i
         return a[2]
-    
+    #
     
     def giveByMaxTime(self, way):
         a=[0,0,0]
@@ -39,11 +39,9 @@ class Route:
         if time>self.giveByMaxTime(way) or time<self.giveByMinTime(way):
             return False
         for i in range(1, time):
-            if time==1:
-                pass
             for u in way:
                 if u[2]==time-i:
-                    return [i[0], i[2]]
+                    return [u[0], u[1]]
                 
             
         

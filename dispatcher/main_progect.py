@@ -40,9 +40,9 @@ def fill(obj):
 
 
 drone=Drone()
-drone.create(100, 100, 10, 5, 1, [100, 0], 'a-211', [0, 0], 1, [3, 4])
+drone.create(100, 100, 10, 5, 1, [100, 0], 'a-211', [0, 0], 0, [3, 4])
 dr=Drone()
-dr.create(100, 100, 10, 5, 1, [-100, -50], 'a-111', [8, 1], 1, [0, 0])
+dr.create(100, 100, 10, 5, 1, [-100, -50], 'a-111', [0, 1], 2, [0, 0])
 helicopter=Drone()
 helicopter.create(100, 100, 10, 5, 1, [0, -50], 'a-111', [1, 1], 0, [0, 0])
 fill([drone, dr, helicopter])
@@ -67,9 +67,11 @@ db=Db()
 end=False
 dp=Dispatcher(view)
 
-
+r=dp.wayBuilder(dr)
+print(r.route)
 route=dp.wayBuilder(drone)
 print(route.route)
+
 
 while not end:  
     view.draw(db.findActualMap(0))
