@@ -4,7 +4,7 @@ import threading
 import json
 from View import *
 from Db import *
-from Aircraft import *
+from Object import *
 from Dispatcher import *
 
 def fill(obj):
@@ -59,19 +59,23 @@ fill([drone, dr, helicopter])
 #cursor.close()
 #title.close()
 
-
+bld=Stable()
+bld.fill([2, 3])
 
 view=View()
 #obj=[['a-111', 0, 0], ["a-112", 1000, 200]]
 db=Db()
 end=False
-dp=Dispatcher(view)
+dp=Dispatcher(view, [bld])
 
-r=dp.wayBuilder(dr)
-print(r.route)
+
+
+
+
 route=dp.wayBuilder(drone)
-print(route.route)
+#print(route.route)
 
+db.writeToDB([route])
 
 while not end:  
     view.draw(db.findActualMap(0))
