@@ -32,9 +32,10 @@ class View:
     def draw(self, obj):
         for i in self.screen:
             canvas.delete(i)
-        for i in obj:
-            self.screen.append(canvas.create_rectangle(int(i[1]*self.px_x/self.x_point)*self.x_point, sc_he-(int((i[2]*self.px_y/self.y_point))*self.y_point), (int(i[1]*self.px_x/self.x_point)+1)*self.x_point, sc_he-(int(i[2]*self.px_y/self.y_point)+1)*self.y_point, fill="black"))
-            self.screen.append(canvas.create_text((int((i[1]*self.px_x/self.x_point))+0.5)*self.x_point, sc_he-(int((i[2]*self.px_y/self.y_point))+0.5)*self.y_point, text=i[0], fill="#00FF00"))
+        for i in obj.keys():
+            for a in obj[a].keys():
+                self.screen.append(i*self.x_point, self.y_point*(8-a), text=obj[i][2])
+            
         if self.timeText==None:
             self.timeText=canvas.create_text(50, 50, text=(''+str(localtime(time())[3])+' '+str(localtime(time())[4])+' '+str(localtime(time())[5])))
         else:

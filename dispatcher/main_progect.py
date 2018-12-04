@@ -6,7 +6,7 @@ from View import *
 from Db import *
 from Object import *
 from Dispatcher import *
-
+'''
 def fill(obj):
         a=[]
         t=int(time()-3)
@@ -27,25 +27,24 @@ def fill(obj):
 
                 # print("eror")
         print("Done!!")
-        '''
+'''
+'''
         cursor.execute('SELECT * FROM maps')
         i=cursor.fetchone()
         while i is not None:
            print(str(i[0]))
            print(str(i[1])+'\n')
-           i=cursor.fetchone() '''
+           i=cursor.fetchone() 
         conection.commit()
         cursor.close()
         conection.close()
-
-
+'''
+CurrentTime=int(time())
+print(CurrentTime)
 drone=Drone()
 drone.create(100, 100, 10, 5, 1, [100, 0], 'a-211', [0, 0], 0, [3, 4])
-dr=Drone()
-dr.create(100, 100, 10, 5, 1, [-100, -50], 'a-111', [0, 1], 2, [0, 0])
-helicopter=Drone()
-helicopter.create(100, 100, 10, 5, 1, [0, -50], 'a-111', [1, 1], 0, [0, 0])
-fill([drone, dr, helicopter])
+
+#fill([drone])
 
 
 
@@ -66,19 +65,24 @@ view=View()
 #obj=[['a-111', 0, 0], ["a-112", 1000, 200]]
 db=Db()
 end=False
-dp=Dispatcher(view, [bld])
+dp=Dispatcher(view)
 
 
 
-
-
+dp.addStables(bld)
 route=dp.wayBuilder(drone)
 #print(route.route)
 
-db.writeToDB([route])
+#db.writeToDB([route, rt])
 
-while not end:  
-    view.draw(db.findActualMap(0))
+
+db.saveMap(1+CurrentTime, dp.objectsMaps[1])
+
+while not end: 
+    try:
+        view.draw(db.findActualMap(0))
+    except:
+        db.close_()
     view.update()
     sleep(1)
 

@@ -1,7 +1,13 @@
 #
 
 
-class Aircraft:
+
+class Object:
+    def __init__(self):
+        pass
+
+
+class Aircraft(object):
     def __init__(self, name):
         self.maxHorisontal=0
         self.maxVertical=0
@@ -62,6 +68,18 @@ class Airplane(Aircraft):
     def __init__(self):
         pass
 
+class Stable(Object):
+    def __init__(self):
+        self.coords=[]
+        
+    def fill(self, coords):
+        self.coords=coords
+        
+        
+        
+class Building(Stable):
+    def __init__(self):
+        pass
 
 
 

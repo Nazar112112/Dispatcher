@@ -3,14 +3,15 @@
 
 
 class Route:
-    def __init__(self, way):
-        self.route=self.fillWay(way)
+    def __init__(self, way, name):
+        self.route=self.fillWay(way, name)
         
         
         
         
-    def fillWay(self, way):
+    def fillWay(self, way, name):
         route={}
+        route['name']=name
         for i in way:
             route[i[2]]=[i[0], i[1]]
         return route
@@ -38,7 +39,7 @@ class Route:
                 return [i[0], i[1]]
         if time>self.giveByMaxTime(way) or time<self.giveByMinTime(way):
             return False
-        for i in range(1, time):
+        for i in range(1, time+1):
             for u in way:
                 if u[2]==time-i:
                     return [u[0], u[1]]

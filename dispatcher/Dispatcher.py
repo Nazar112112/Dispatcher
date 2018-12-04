@@ -4,9 +4,10 @@ from time import *
 
 class Dispatcher:
     def __init__(self, view):
-        self.objectsMaps=[]
+        self.objectsMaps={}
         self.view=view
         self.limit=[view.x_count, 8]
+        self.stables=[]
 
 
 
@@ -31,12 +32,13 @@ class Dispatcher:
                 for i in screen:
                     if i[2]!=-1 and i[0]==destination[0] and i[1]==destination[1]:
                         end=i
-                
-                return Route(self.findWay(end, start, screen, object))
+                return Route(self.findWay(end, start, screen, object), object.name)
                 break
        
        
-       
+    def addStables(self, stable):
+        self.stables.append(stable)
+        
        
        
        
@@ -49,30 +51,33 @@ class Dispatcher:
                 variants.append([i[0], i[1]])
         for start in variants:
             for x in screen:
-                if x[0]==start[0]+1 and x[1]==start[1] and self.isEmpty([start[0]+1, start[1], x[2]]):
+                if x[0]==start[0]+1 and x[1]==start[1] and self.isEmpty([start[0]+1, start[1], x[2]], counter+2):
+                    x[2]=counter+2
+                  
+                
+                elif  x[0]==start[0]-1 and x[1]==start[1] and self.isEmpty([start[0]-1, start[1], x[2]],counter+2):
                     x[2]=counter+2
                 
-                elif  x[0]==start[0]-1 and x[1]==start[1] and self.isEmpty([start[0]-1, start[1], x[2]]):
+                elif x[1]==start[1]+1 and x[0]==start[0] and self.isEmpty([start[0], start[1]+1, x[2]],counter+2):
                     x[2]=counter+2
-                
-                elif x[1]==start[1]+1 and x[0]==start[0] and self.isEmpty([start[0], start[1]+1, x[2]]):
+
+                elif  x[1]==start[1]-1 and x[0]==start[0] and self.isEmpty([start[0], start[1]-1, x[2]],counter+2):
                     x[2]=counter+2
-                
-                elif  x[1]==start[1]-1 and x[0]==start[0] and self.isEmpty([start[0], start[1]-1, x[2]]):
-                    x[2]=counter+2
-                
-                if x[0]==start[0]+1 and x[1]==start[1]+1 and self.isEmpty([start[0]+1, start[1]+1, x[2]]):
+                  
+                if x[0]==start[0]+1 and x[1]==start[1]+1 and self.isEmpty([start[0]+1, start[1]+1, x[2]],counter+3):
+                    x[2]=counter+3
+                  
+                elif x[0]==start[0]+1 and x[1]==start[1]-1 and self.isEmpty([start[0]+1, start[1]-1, x[2]],counter+3):
+                    x[2]=counter+3
+                   
+                elif x[0]==start[0]-1 and x[1]==start[1]+1 and self.isEmpty([start[0]-1, start[1]+1, x[2]],counter+3):
+                    x[2]=counter+3
+                   
+                elif x[0]==start[0]-1 and x[1]==start[1]-1 and self.isEmpty([start[0]-1, start[1]-1, x[2]],counter+3):
                     x[2]=counter+3
                 
-                elif x[0]==start[0]+1 and x[1]==start[1]-1 and self.isEmpty([start[0]+1, start[1]-1, x[2]]):
-                    x[2]=counter+3
-                
-                elif x[0]==start[0]-1 and x[1]==start[1]+1 and self.isEmpty([start[0]-1, start[1]+1, x[2]]):
-                    x[2]=counter+3
-                
-                elif x[0]==start[0]-1 and x[1]==start[1]-1 and self.isEmpty([start[0]-1, start[1]-1, x[2]]):
-                    x[2]=counter+3
-                
+
+
 
                 
                 
@@ -101,7 +106,7 @@ class Dispatcher:
             if way[len(way)-1][2]==obj.timeOfAppear:
                 break
         way=way[::-1]
-        route=Route(way)
+        route=Route(way, obj.name)
         self.mapBuilder(route, obj, way)
         return way
             
@@ -110,16 +115,13 @@ class Dispatcher:
         
         
     
-    def isEmpty(self, coords):
+    def isEmpty(self, coords, futureTime):
         if len(self.objectsMaps)!=0:
-            for i in self.objectsMaps:
-                for a in range(0, 4):
-                    try:
-                        print(i[coords[2]]+a)
-                        break
-                        return False
-                    except:
-                        pass
+            try:
+                self.objectsMaps[futureTime][coords[0]][coords[1]]
+                return False
+            except:
+                pass
         if coords[2]==-1:
             return True
         else:
@@ -131,11 +133,15 @@ class Dispatcher:
 
 
     def  mapBuilder(self, route, obj, way):
-        map={}
+        map=self.objectsMaps
         for i in range(route.giveByMinTime(way), route.giveByMaxTime(way)+1):
-            map[i]=route.giveByTime(way, i)
-        self.objectsMaps.append(map)
-        print(self.objectsMaps, 222)
+            try:
+                map[i][route.giveByTime(way, i)[0]]={route.giveByTime(way, i)[1]:obj.name}
+            except:
+                map[i]={route.giveByTime(way, i)[0]:{route.giveByTime(way, i)[1]:obj.name}}
+            
+        print(map)
+        self.objectsMaps=map
 
         
         
