@@ -75,14 +75,13 @@ route=dp.wayBuilder(drone)
 
 #db.writeToDB([route, rt])
 
+for i in  dp.objectsMaps:
+    db.saveMap(i+CurrentTime, dp.objectsMaps[i])
+    
 
-db.saveMap(1+CurrentTime, dp.objectsMaps[1])
 
 while not end: 
-    try:
-        view.draw(db.findActualMap(0))
-    except:
-        db.close_()
+    view.draw(db.findActualMap(0))
     view.update()
     sleep(1)
 

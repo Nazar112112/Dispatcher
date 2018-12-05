@@ -11,7 +11,8 @@ class Db:
 
         def findActualMap(self, i):
                 self.cursor.execute('SELECT * FROM maps WHERE time <'+str(int(time.time()+i))+' ORDER BY time  DESC LIMIT 1')
-                a=json.loads(self.cursor.fetchone()[2])
+                i=self.cursor.fetchone()
+                a=json.loads(i[2])
                 return a
 
 
@@ -24,8 +25,11 @@ class Db:
                 
                 
         def saveMap(self, Time, map):
-            self.cursor.execute('INSERT INTO maps (time, data, last_update) VALUES(?,?, ?)', ((str(Time)), json.dumps(map), str(int(time.time()))))
-           
+            conection=connect('..\Db\dispatcher.db')
+            cursor=conection.cursor()
+            cursor.execute('INSERT INTO maps (time, data, last_update) VALUES(?,?, ?)', ((str(Time)), json.dumps(map), str(int(time.time()))))
+            conection.commit()
+            cursor.close()
                 
 
 
