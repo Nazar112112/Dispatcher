@@ -24,7 +24,6 @@ class Aircraft(object):
         data=[]
         if map !=[]:
             for i in map:
-                print(i[0], self.name)
                 if i[0]==self.name:
                     data.append(self.name)
                     data.append(i[1]+self.speed[0]*time)
