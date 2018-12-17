@@ -6,84 +6,74 @@ from View import *
 from Db import *
 from Object import *
 from Dispatcher import *
-'''
-def fill(obj):
-        a=[]
-        t=int(time()-3)
-        conection=sqlite3.connect('..\Db\dispatcher.db')
-        cursor=conection.cursor()
-        for i in range(2, 12):
-                if i==2:
-                    for y in obj:
-                        if y.timeOfAppear==0:
-                            a.append([y.name, y.startPos[0]*100, y.startPos[1]*100])
-                cursor.execute('INSERT INTO maps (time, data, last_update) VALUES(?,?, ?)', (str(int(t+i)), json.dumps(a), str(time())))
-                temporary=[]
-                for y in obj:
-                    if (i-2)>=y.timeOfAppear:
-                        temporary.append([y.name, y.startPos[0]*100+(i-2-y.timeOfAppear)*y.speed[0], y.startPos[1]*100+(i-2-y.timeOfAppear)*y.speed[1]])
-                a=temporary                
 
 
-                # print("eror")
-        print("Done!!")
-'''
-'''
-        cursor.execute('SELECT * FROM maps')
-        i=cursor.fetchone()
-        while i is not None:
-           print(str(i[0]))
-           print(str(i[1])+'\n')
-           i=cursor.fetchone() 
-        conection.commit()
-        cursor.close()
-        conection.close()
-'''
-CurrentTime=int(time())
-print(CurrentTime)
+
+side=100
+
+drones=[]
+
 drone=Drone()
-drone.create(100, 100, 10, 5, 1, [100, 0], 'a-211', [0, 0], 0, [3, 4])
+drone.create(100, 100, 10, 5, 1, 100, 'a-211', [2, 0], 0, [4, 0])
+drones.append(drone)
 
-#fill([drone])
+dr=Drone()
+dr.create(100, 100, 10, 5, 1, 200, 'a-212', [2, 5], 3, [13, 5])
+drones.append(dr)
 
+dr2=Drone()
+dr2.create(100, 100, 10, 5, 1, 50, 'a-215', [13, 3], 1, [0, 0])
+drones.append(dr2)
+dr3=Drone()
 
+dr3.create(100, 100, 10, 5, 1, 123, 'a-213', [0, 0], 5, [13, 8])
+drones.append(dr3)
 
-#cursor=title.cursor()
-#cursor.execute('SELECT * FROM maps')
-#i=cursor.fetchone()
-#while i is not None:
-   # print(i[0])
-  #  print(i[1]+'\n')
-    #i=cursor.fetchone()
-#cursor.close()
-#title.close()
+stable=[]
+limits=[13, 8]
 
 bld=Stable()
-bld.fill([2, 3])
+bld.fill([9, 0])
+bld2=Stable()
+bld2.fill([3, 0])
+bld1=Stable()
+bld1.fill([3,1])
+bld3=Stable()
+bld3.fill([1, 0])
+bld4=Stable()
+bld4.fill([13, 0])
 
-view=View()
+view=View(side, limits)
 #obj=[['a-111', 0, 0], ["a-112", 1000, 200]]
 db=Db()
 end=False
-dp=Dispatcher(view)
-
-
-
+dp=Dispatcher(limits, side)
 dp.addStables(bld)
-route=dp.wayBuilder(drone)
-#print(route.route)
+dp.addStables(bld2)
+dp.addStables(bld1)
+dp.addStables(bld3)
+stable.append(bld)
+stable.append(bld1)
+stable.append(bld2)
+stable.append(bld3)
+stable.append(bld4)
+
 
 #db.writeToDB([route, rt])
+routes=[]
+for i in drones:
+    routes.append(dp.wayBuilder(i)) 
+CurrentTime=(int(time()))
 
-for i in  dp.objectsMaps:
+for i in  dp.objectsMaps.keys():
     db.saveMap(i+CurrentTime, dp.objectsMaps[i])
     
 
-
 while not end: 
-    view.draw(db.findActualMap(0))
+    view.draw(db.findActualMap(0), stable)
     view.update()
     sleep(1)
+    
 
                 
 
