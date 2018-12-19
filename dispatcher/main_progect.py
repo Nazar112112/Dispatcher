@@ -1,5 +1,6 @@
 from time import *
 import sqlite3 
+from threading import *
 import threading
 import json
 from View import *
@@ -59,6 +60,8 @@ stable.append(bld3)
 stable.append(bld4)
 
 
+
+
 #db.writeToDB([route, rt])
 routes=[]
 for i in drones:
@@ -68,11 +71,14 @@ CurrentTime=(int(time()))
 for i in  dp.objectsMaps.keys():
     db.saveMap(i+CurrentTime, dp.objectsMaps[i])
     
+    
 
+tim=time()
 while not end: 
-    view.draw(db.findActualMap(0), stable)
+    if int(time()-tim):
+        view.draw(db.findActualMap(0), stable)
+        tim=time()
     view.update()
-    sleep(1)
     
 
                 

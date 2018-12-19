@@ -1,5 +1,7 @@
 from tkinter import *
 from time import *
+from threading import *
+
 
 tk=Tk()
 tk.title("Title")
@@ -10,6 +12,17 @@ canvas.pack()
 tk.update()
 sc_wd=tk.winfo_screenwidth()
 sc_he=tk.winfo_screenheight()
+
+limits=[13, 8]
+side=100
+
+
+
+
+
+
+#self.inputWindow.attributes("-topmost", 1)
+tk.update()
 
 
 class View:
@@ -24,8 +37,17 @@ class View:
         self.sc_wd=sc_wd
         self.sc_he=sc_he
         strftime('%Y-%m-%d %H:%M:%S')
-
-        
+        self.inputWindow=0
+        self.timeScale=None
+        self.tText=None
+        self.startPos=None
+        self.startX=None
+        self.startY=None
+        self.endPos=None
+        self.endX=None
+        self.endY=None
+        self.speedSc=None
+        self.tSpeed=None
 
 
     def draw(self, obj, stable):
@@ -48,6 +70,44 @@ class View:
             tk.update()
     
             
+            
+    def addAircraft(self):
+        def ret():
+            ret=[self.timeScale.get()]
+            print(ret)
+            self.inputWindow.destroy()
+            return ret
+        self.inputWindow=Tk()
+        self.inputWindow.resizable(width=False, height=False)
+        self.inputWindow.title("Input")
+        self.inputWindow.geometry("120x350")
+        self.timeScale=Scale(self.inputWindow, from_=0, to=10, width=8, orient='horizontal')
+        self.timeScale.place(relx=.49, rely=.07, anchor='c')
+        self.tText=Label(self.inputWindow, text='Time:')
+        self.tText.place(relx=.27, rely=.01, anchor='c')
+        self.startPos=Label(self.inputWindow, text="Start:")
+        self.startPos.place(relx=.27, rely=.16, anchor='c')
+        self.startX=Scale(self.inputWindow, from_=0, to=limits[0]*side,  resolution=10, width=8, orient='horizontal')
+        self.startX.place(relx=.49, rely=.24, anchor='c')
+        self.startY=Scale(self.inputWindow, from_=0, to=limits[1]*side,  resolution=10, width=8, orient='horizontal')
+        self.startY.place(relx=.49, rely=.33, anchor='c')
+        self.endPos=Label(self.inputWindow, text="Destination:")
+        self.endPos.place(relx=.37, rely=.43, anchor='c')
+        self.endX=Scale(self.inputWindow, from_=0, to=limits[0]*side,  resolution=10, width=8,  orient='horizontal')
+        self.endX.place(relx=.49, rely=.50, anchor='c')
+        self.endY=Scale(self.inputWindow, from_=0, to=limits[1]*side,  resolution=10, width=8,  orient='horizontal')
+        self.endY.place(relx=.49, rely=.6, anchor='c')
+        self.tSpeed=Label(self.inputWindow, text='Speed:')
+        self.tSpeed.place(relx=.37, rely=.75, anchor='c')
+        self.speedSc=Scale(self.inputWindow, from_=0, to=500, orient='horizontal', width=8)
+        self.speedSc.place(relx=.49, rely=.83, anchor='c')
+        aplly=Button(self.inputWindow, text='Start', bg='light blue', command=ret)
+        aplly.place(relx=.45, rely=.975, anchor='c')
+
+
+         
+
+
 
         
 def end():
